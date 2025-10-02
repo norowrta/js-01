@@ -65,21 +65,23 @@ const galleryItems = [
 ];
 
 const listItems = document.querySelector(".js-gallery");
-const lightBox = document.querySelector("js-lightbox");
-const lightBoxImage = document.querySelector("lightbox__image");
-const lightBoxButton = document.querySelector("lightbox__button");
+const lightBox = document.querySelector(".js-lightbox");
+const lightBoxImage = document.querySelector(".lightbox__image");
+const lightBoxButton = document.querySelector(".lightbox__button");
 
 function createGallery(items) {
-  return items.map(({ preview, original, description }) => {
-    console.log(preview, original, description);
-    return `
+  return items
+    .map(({ preview, original, description }) => {
+      console.log(preview, original, description);
+      return `
   <li class="gallery__item">
     <a href="${original}" class="gallery__link">
       <img src="${preview}" class="gallery__image"
        alt="${description}" data-source="${original}">
     </a>
   </li>`;
-  });
+    })
+    .join("");
 }
 let createGalleryFunc = createGallery(galleryItems);
 listItems.insertAdjacentHTML("afterbegin", createGalleryFunc);
@@ -94,5 +96,15 @@ listItems.addEventListener("click", (event) => {
   if (event.target.classList.contains("gallery__image")) {
     const imageLink = event.target.dataset.source;
     openModal(imageLink);
+  }
+});
+lightBoxButton.addEventListener("click", () => {
+  lightBox.classList.remove("is-open");
+  lightBoxImage.src = "";
+});
+document.addEventListener("keydown", (event) => {
+  if (event.code === "Escape") {
+    lightBox.classList.remove("is-open");
+    lightBoxImage.src = "";
   }
 });
